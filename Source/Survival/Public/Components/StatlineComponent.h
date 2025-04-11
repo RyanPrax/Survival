@@ -88,7 +88,6 @@ private:
 
 	class UCharacterMovementComponent* OwningCharacterMovementComp;
 
-	// Energy
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	FCoreStat Health;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
