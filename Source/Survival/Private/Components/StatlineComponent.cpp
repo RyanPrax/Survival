@@ -6,10 +6,16 @@
 
 void UStatlineComponent::TickStats(const float& DeltaTime)
 {
-	Health.TickStat(DeltaTime);
 	TickStamina(DeltaTime);
-	Hunger.TickStat(DeltaTime);
-	Thirst.TickStat(DeltaTime);
+	TickHunger(DeltaTime);
+	TickThirst(DeltaTime);
+	// Don't regenerate health if hunger or thirst is <= 0.0
+	// Otherwise they cancel out
+	if (Thirst.GetCurrent() <= 0.0 || Hunger.GetCurrent() <= 0.0)
+	{
+		return;
+	}
+	Health.TickStat(DeltaTime);
 }
 void UStatlineComponent::TickStamina(const float& DeltaTime)
 {
@@ -21,7 +27,7 @@ void UStatlineComponent::TickStamina(const float& DeltaTime)
 
 	if (bIsSprinting && IsValidSprinting()) 
 	{
-		Stamina.TickStat(0 - (DeltaTime * SprintCostMultiplier));
+		Stamina.TickStat(0 - abs((DeltaTime * SprintCostMultiplier)));
 		if (Stamina.GetCurrent() <= 0.0)
 		{
 			SetSprinting(false);
@@ -31,6 +37,29 @@ void UStatlineComponent::TickStamina(const float& DeltaTime)
 	}
 	Stamina.TickStat(DeltaTime);
 }
+
+void UStatlineComponent::TickHunger(const float& DeltaTime)
+{
+	if (Hunger.GetCurrent() <= 0.0)
+	{
+		Health.Adjust(0 - abs(StarvingHealthDamagePerSecond * DeltaTime));
+		return;
+	}
+
+	Hunger.TickStat(DeltaTime);
+}
+
+void UStatlineComponent::TickThirst(const float& DeltaTime)
+{
+	if (Thirst.GetCurrent() <= 0.0)
+	{
+		Health.Adjust(0 - abs(DehydrationHealthDamagePerSecond * DeltaTime));
+		return;
+	}
+
+	Thirst.TickStat(DeltaTime);
+}
+
 bool UStatlineComponent::IsValidSprinting()
 {
 	return OwningCharacterMovementComp->Velocity.Length() > WalkSpeed && !OwningCharacterMovementComp->IsFalling();

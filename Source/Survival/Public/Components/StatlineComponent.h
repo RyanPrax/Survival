@@ -93,9 +93,9 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	FCoreStat Stamina;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	FCoreStat Hunger = FCoreStat(100, 100, -0.125);
+	FCoreStat Hunger = FCoreStat(100, 100, -2.125);
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	FCoreStat Thirst = FCoreStat(100, 100, -0.25);
+	FCoreStat Thirst = FCoreStat(100, 100, -2.25);
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	bool bIsSprinting = false;
@@ -105,18 +105,23 @@ private:
 	float WalkSpeed = 125;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float SprintSpeed = 450;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float JumpCost = 10;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float SecondsForStaminaExhaustion = 3;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float CurrentStaminaExhaustion = 0;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	float StarvingHealthDamagePerSecond = 1;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	float DehydrationHealthDamagePerSecond = 1;
 
 	void TickStats(const float& DeltaTime);
 	void TickStamina(const float& DeltaTime);
+	void TickHunger(const float& DeltaTime);
+	void TickThirst(const float& DeltaTime);
+
+
 	bool IsValidSprinting();
 
 protected:
@@ -124,6 +129,7 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
+
 	// Sets default values for this component's properties
 	UStatlineComponent();
 
