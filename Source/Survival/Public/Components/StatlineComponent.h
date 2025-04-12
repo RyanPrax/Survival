@@ -11,7 +11,7 @@ UENUM(BlueprintType)
 enum class ECoreStat : uint8 //Unreal requires ECoreStat to derive from uint8
 {
 	// CS for CoreStat
-	// UMETA changes varibale display name
+	// UMETA changes variable display name
 	CS_HEALTH UMETA(DisplayName="Health"),
 	CS_STAMINA UMETA(DisplayName = "Stamina"),
 	CS_HUNGER UMETA(DisplayName = "Hunger"),
@@ -46,8 +46,8 @@ public:
 		PerSecondTick = tick;
 	}
 	
-	// & is reference, so that we dont have hundreds of copies of the value
-	// We arent modifying anyways
+	// & is reference, so that we don't have hundreds of copies of the value
+	// We aren't modifying anyways
 	void TickStat(const float& DeltaTime)
 	{
 		Current = FMath::Clamp(Current + (PerSecondTick * DeltaTime), 0, Max);
