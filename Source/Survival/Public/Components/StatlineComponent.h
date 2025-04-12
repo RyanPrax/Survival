@@ -39,22 +39,21 @@ public:
 	FCoreStat()
 	{
 	};
-	FCoreStat(const float& current, const float& max, const float& tick)
+	FCoreStat(const float current, const float max, const float tick)
 	{
 		Current = current;
 		Max = max;
 		PerSecondTick = tick;
 	}
 	
-	// & is reference, so that we don't have hundreds of copies of the value
-	// We aren't modifying anyways
-	void TickStat(const float& DeltaTime)
+
+	void TickStat(const float DeltaTime)
 	{
 		Current = FMath::Clamp(Current + (PerSecondTick * DeltaTime), 0, Max);
 	}
 
 	// Works for both adding and subtracting
-	void Adjust(const float& Amount)
+	void Adjust(const float Amount)
 	{
 		Current = FMath::Clamp(Current + Amount, 0, Max);
 	}
@@ -66,7 +65,7 @@ public:
 	}
 
 	// Used for Hunger/Thirst because these decay over time
-	void AdjustTick(const float& NewTick) 
+	void AdjustTick(const float NewTick) 
 	{
 		PerSecondTick = NewTick;
 	}
@@ -120,10 +119,10 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float DehydrationHealthDamagePerSecond = 1;
 
-	void TickStats(const float& DeltaTime);
-	void TickStamina(const float& DeltaTime);
-	void TickHunger(const float& DeltaTime);
-	void TickThirst(const float& DeltaTime);
+	void TickStats(const float DeltaTime);
+	void TickStamina(const float DeltaTime);
+	void TickHunger(const float DeltaTime);
+	void TickThirst(const float DeltaTime);
 
 	bool IsValidSprinting();
 
@@ -148,9 +147,9 @@ public:
     UFUNCTION(BlueprintCallable)
     bool CanSprint() const;
 	UFUNCTION(BlueprintCallable)
-	void SetSprinting(const bool& IsSprinting);
+	void SetSprinting(const bool IsSprinting);
 	UFUNCTION(BlueprintCallable)
-	void SetSneaking(const bool& IsSneaking);
+	void SetSneaking(const bool IsSneaking);
 	UFUNCTION(BlueprintCallable)
 	bool CanJump();
 	UFUNCTION(BlueprintCallable)
