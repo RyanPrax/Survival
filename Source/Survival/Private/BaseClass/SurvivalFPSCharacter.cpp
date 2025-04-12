@@ -45,6 +45,11 @@ void ASurvivalFPSCharacter::SetSprinting(const bool& IsSprinting)
 }
 
 
+void ASurvivalFPSCharacter::SetSneaking(const bool& IsSneaking)
+{
+	Statline->SetSneaking(IsSneaking);
+}
+
 // Called every frame
 void ASurvivalFPSCharacter::Tick(float DeltaTime)
 {

@@ -27,6 +27,8 @@ protected:
 	bool CanSprint() const;
 	void SetSprinting(const bool& IsSprinting);
 
+	void SetSneaking(const bool& IsSneaking);
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

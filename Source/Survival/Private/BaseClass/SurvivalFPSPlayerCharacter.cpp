@@ -63,6 +63,16 @@ void ASurvivalFPSPlayerCharacter::SprintOff()
 }
 
 
+void ASurvivalFPSPlayerCharacter::SneakOn()
+{
+	SetSneaking(true);
+}
+
+void ASurvivalFPSPlayerCharacter::SneakOff()
+{
+	SetSneaking(false);
+}
+
 void ASurvivalFPSPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	// Add Input Mapping Context
@@ -90,6 +100,10 @@ void ASurvivalFPSPlayerCharacter::SetupPlayerInputComponent(UInputComponent* Pla
 		// Sprinting
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Started, this, &ASurvivalFPSPlayerCharacter::SprintOn);
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &ASurvivalFPSPlayerCharacter::SprintOff);
+
+		// Sneaking
+		EnhancedInputComponent->BindAction(SneakAction, ETriggerEvent::Started, this, &ASurvivalFPSPlayerCharacter::SneakOn);
+		EnhancedInputComponent->BindAction(SneakAction, ETriggerEvent::Completed, this, &ASurvivalFPSPlayerCharacter::SneakOff);
 	}
 }
 
