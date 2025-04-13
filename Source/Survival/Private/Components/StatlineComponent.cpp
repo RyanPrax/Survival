@@ -4,7 +4,7 @@
 #include "Components/StatlineComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
-void UStatlineComponent::TickStats(const float DeltaTime)
+void UStatlineComponent::TickStats(const float& DeltaTime)
 {
 	TickStamina(DeltaTime);
 	TickHunger(DeltaTime);
@@ -17,7 +17,7 @@ void UStatlineComponent::TickStats(const float DeltaTime)
 	}
 	Health.TickStat(DeltaTime);
 }
-void UStatlineComponent::TickStamina(const float DeltaTime)
+void UStatlineComponent::TickStamina(const float& DeltaTime)
 {
 	if (CurrentStaminaExhaustion > 0.0)
 	{
@@ -38,7 +38,7 @@ void UStatlineComponent::TickStamina(const float DeltaTime)
 	Stamina.TickStat(DeltaTime);
 }
 
-void UStatlineComponent::TickHunger(const float DeltaTime)
+void UStatlineComponent::TickHunger(const float& DeltaTime)
 {
 	if (Hunger.GetCurrent() <= 0.0)
 	{
@@ -49,7 +49,7 @@ void UStatlineComponent::TickHunger(const float DeltaTime)
 	Hunger.TickStat(DeltaTime);
 }
 
-void UStatlineComponent::TickThirst(const float DeltaTime)
+void UStatlineComponent::TickThirst(const float& DeltaTime)
 {
 	if (Thirst.GetCurrent() <= 0.0)
 	{
@@ -125,7 +125,7 @@ bool UStatlineComponent::CanSprint() const
 	return Stamina.GetCurrent() > 0.0;
 }
 
-void UStatlineComponent::SetSprinting(const bool IsSprinting)
+void UStatlineComponent::SetSprinting(const bool& IsSprinting)
 {
 	bIsSprinting = IsSprinting;
 	if (bIsSneaking && !bIsSprinting)
@@ -136,7 +136,7 @@ void UStatlineComponent::SetSprinting(const bool IsSprinting)
 	OwningCharacterMovementComp->MaxWalkSpeed = bIsSprinting ? SprintSpeed : WalkSpeed;
 }
 
-void UStatlineComponent::SetSneaking(const bool IsSneaking)
+void UStatlineComponent::SetSneaking(const bool& IsSneaking)
 {
 	bIsSneaking = IsSneaking;
 	if (bIsSprinting && !bIsSneaking)
