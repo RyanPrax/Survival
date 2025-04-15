@@ -11,7 +11,7 @@ UENUM(BlueprintType)
 enum class ECoreStat : uint8 //Unreal requires ECoreStat to derive from uint8
 {
 	// CS for CoreStat
-	// UMETA changes variable display name
+	// UMETA changes variable display name in Blueprints
 	CS_HEALTH UMETA(DisplayName="Health"),
 	CS_STAMINA UMETA(DisplayName = "Stamina"),
 	CS_HUNGER UMETA(DisplayName = "Hunger"),
