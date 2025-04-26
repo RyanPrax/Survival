@@ -12,6 +12,8 @@ ASurvivalFPSCharacter::ASurvivalFPSCharacter()
 
 	Statline = CreateDefaultSubobject<UStatlineComponent>(TEXT("Statline"));
 	Statline->SetMovementCompReference(GetCharacterMovement());
+
+	SaveActorID = FGuid::NewGuid();
 }
 
 
@@ -19,6 +21,11 @@ ASurvivalFPSCharacter::ASurvivalFPSCharacter()
 void ASurvivalFPSCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (!SaveActorID.IsValid())
+	{
+		SaveActorID = FGuid::NewGuid();
+	}
 	
 }
 
@@ -62,5 +69,22 @@ void ASurvivalFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+
+FGuid ASurvivalFPSCharacter::GetActorSaveID_Implementation()
+{
+	return SaveActorID;
+}
+
+FSaveActorData ASurvivalFPSCharacter::GetSaveData_Implementation()
+{
+	FSaveActorData Ret;
+
+	Ret.ActorClass = this->GetClass();
+	Ret.ActorTransform = this->GetTransform();
+	Ret.WasSpawned = this->WasSpawned;
+
+	return Ret;
 }
 

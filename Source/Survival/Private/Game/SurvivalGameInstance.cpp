@@ -5,6 +5,7 @@
 #include "Game/SurvivalSaveGame.h"
 #include "Kismet/GameplayStatics.h"
 #include "EngineUtils.h"
+#include <Serialization/ObjectAndNameAsStringProxyArchive.h>
 
 USurvivalGameInstance::USurvivalGameInstance()
 {
@@ -33,17 +34,41 @@ void USurvivalGameInstance::GatherActorData()
 		{
 			continue;
 		}
-		//TODO Next Episode
+		FGuid SaveActorID = Inter->GetActorSaveID_Implementation();
+		if (!SaveActorID.IsValid())
+		{
+			continue;
+		}
+		FSaveActorData SaveActorData = Inter->GetSaveData_Implementation();
+
+		FMemoryWriter MemoryWriter(SaveActorData.ByteData);
+		FObjectAndNameAsStringProxyArchive Ar(MemoryWriter, true);
+		Ar.ArIsSaveGame = true;
+		Actor->Serialize(Ar);
+		
+
+		SaveableActorData.Add(SaveActorID, SaveActorData);
 
 	}
 }
 
 void USurvivalGameInstance::AddActorData(const FGuid& ActorID, FSaveActorData ActorData)
 {
-	SaveableActorData[ActorID] = ActorData;
+	SaveableActorData.Add(ActorID, ActorData);
 }
 
 FSaveActorData USurvivalGameInstance::GetActorData(const FGuid& ActorID)
 {
 	return SaveableActorData[ActorID];
+}
+
+void USurvivalGameInstance::DEVSaveGame()
+{
+	if (SaveGameObject == nullptr)
+	{
+		CreateSaveSlot();
+	}
+	GatherActorData();
+	SaveGameObject->SetSaveActorData(SaveableActorData);
+	UGameplayStatics::SaveGameToSlot(SaveGameObject, SaveGameName, 0);
 }

@@ -4,15 +4,24 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Interface/SaveActorInterface.h"
 #include "SurvivalFPSCharacter.generated.h"
 
 UCLASS()
-class SURVIVAL_API ASurvivalFPSCharacter : public ACharacter
+class SURVIVAL_API ASurvivalFPSCharacter : public ACharacter, public ISaveActorInterface
 {
 	GENERATED_BODY()
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+private:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, SaveGame, meta = (AllowPrivateAccess = "true"))
 	class UStatlineComponent* Statline;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, SaveGame, meta = (AllowPrivateAccess = "true"))
+	FGuid SaveActorID;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, SaveGame, meta = (AllowPrivateAccess = "true"))
+	bool WasSpawned = false;
 
 public:
 	// Sets default values for this character's properties
@@ -36,4 +45,6 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	FGuid GetActorSaveID_Implementation();
+	FSaveActorData GetSaveData_Implementation();
 };
