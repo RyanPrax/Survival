@@ -3,6 +3,7 @@
 
 #include "Components/StatlineComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "SurvivalUtils.h"
 
 void UStatlineComponent::TickStats(const float& DeltaTime)
 {
@@ -156,3 +157,45 @@ void UStatlineComponent::HasJumped()
 {
 	Stamina.Adjust(0 - JumpCost);
 }
+
+FSaveComponentData UStatlineComponent::GetComponentSaveData_Implementation()
+{
+	FSaveComponentData Ret;
+	Ret.ComponentClass = this->GetClass();
+	Ret.RawData.Add(Health.GetSaveString()); //0
+	Ret.RawData.Add(Stamina.GetSaveString()); //1
+	Ret.RawData.Add(Hunger.GetSaveString()); //2
+	Ret.RawData.Add(Thirst.GetSaveString()); //3
+	// Any addition raw data adds here need to be included in the SetComponentSaveData_Implementation function
+
+	return Ret;
+}
+
+void UStatlineComponent::SetComponentSaveData_Implementation(FSaveComponentData Data)
+{
+	TArray<FString> Parts;
+	for (int i = 0; i < Data.RawData.Num(); i++)
+	{
+		Parts.Empty();
+		Parts = ChopString(Data.RawData[i], '|');
+		switch (i)
+		{
+		case 0:
+			Health.UpdateFromSaveString(Parts);
+			break;
+		case 1:
+			Stamina.UpdateFromSaveString(Parts);
+			break;
+		case 2:
+			Hunger.UpdateFromSaveString(Parts);
+			break;
+		case 3:
+			Thirst.UpdateFromSaveString(Parts);
+			break;
+		default:
+			// Log error
+			break;
+		}
+	}
+}
+
